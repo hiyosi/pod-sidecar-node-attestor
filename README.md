@@ -1,7 +1,7 @@
 # K8s-sidecar-node-attestor
 
-This is PoC.
-The Attestor is **NOT* production ready.
+This is a PoC project.
+The Attestor is **NOT** production ready.
 
 ## Motivation
 
