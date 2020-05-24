@@ -21,7 +21,7 @@ import (
 // https://github.com/spiffe/spire/blob/62e723fafafe322cb68e4d494d96cb29695a7b37/pkg/server/plugin/nodeattestor/k8s/psat/psat.go
 
 const (
-	pluginName       = "k8s_sidecar"
+	pluginName       = "pod_sidecar"
 	defaultTokenPath = "/var/run/secrets/tokens/spire-agent"
 )
 
