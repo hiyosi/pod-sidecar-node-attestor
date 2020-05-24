@@ -1,15 +1,21 @@
 out_dir := out/bin
 
-export GO111MODULE=on
-export GOPROXY=https://proxy.golang.org
+SPIRE_VERSION=0.10.0
+
+GOROOT ?= /usr/local/go
+GO111MODULE=on
+GOPROXY=https://proxy.golang.org
 
 build: clean
-	cd cmd/server && GOOS=linux GOARCH=amd64 go build -o ../../../$(out_dir)/server/k8s-sidecar-attestor  -i
-	cd cmd/agent  && GOOS=linux GOARCH=amd64 go build -o ../../../$(out_dir)/server/k8s-sidecar-attestor  -i
+	cd cmd/server && GOOS=linux GOARCH=amd64 $(GOROOT)/bin/go build -o ../../$(out_dir)/server/pod-sidecar-node-attestor  -i
+	cd cmd/agent  && GOOS=linux GOARCH=amd64 $(GOROOT)/bin/go build -o ../../$(out_dir)/agent/pod-sidecar-node-attestor  -i
+
+build-docker-image:
+	docker build -f ./build/docker/Dockerfile.server --build-arg MES="Hello" -t hiyosi/spire-server:${SPIRE_VERSION} .
 
 test:
-	go test -race ./cmd/... ./pkg/...
+	${GOROOT}/bin/go test -race ./cmd/... ./pkg/...
 
 clean:
-	go clean ./cmd/... ./pkg/...
+	${GOROOT}/bin/go clean ./cmd/... ./pkg/...
 	rm -rf out

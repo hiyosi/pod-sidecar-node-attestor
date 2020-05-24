@@ -1,0 +1,27 @@
+FROM golang:1.14 AS build
+
+ARG SPIRE_VERSION=0.10.0
+
+ARG PATH_BASE="/go/src/github.com/hiyosi"
+ARG TAG_PLUGIN="master"
+
+WORKDIR ${PATH_BASE}
+
+RUN mkdir /plugin
+
+# Prevent caching git clone
+ADD https://api.github.com/repos/hiyosi/pod-sidecar-node-attestor/git/refs/heads/${TAG_PLUGIN} plugin.json
+
+RUN git clone --depth 1 -b ${TAG_PLUGIN} https://github.com/hiyosi/pod-sidecar-node-attestor.git
+
+WORKDIR ${PATH_BASE}/pod-sidecar-node-attestor
+
+RUN make build
+
+RUN cp -r out/bin/* /plugin/.
+
+FROM gcr.io/spiffe-io/spire-server:${SPIRE_VERSION}
+
+RUN apk add --no-cache libc6-compat
+
+COPY --from=build /plugin/server/k8s-sidecar-node-attestor /opt/spire/plugin/server/k8s-sidecar-node-attestor
