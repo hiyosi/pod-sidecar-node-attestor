@@ -20,8 +20,8 @@ RUN make build
 
 RUN cp -r out/bin/* /plugin/.
 
-FROM gcr.io/spiffe-io/spire-server:${SPIRE_VERSION}
+FROM gcr.io/spiffe-io/spire-agent:${SPIRE_VERSION}
 
 RUN apk add --no-cache libc6-compat
 
-COPY --from=build /plugin/server/pod-sidecar-node-attestor /opt/spire/plugin/server/pod-sidecar-node-attestor
+COPY --from=build /plugin/agent/pod-sidecar-node-attestor /opt/spire/plugin/agent/pod-sidecar-node-attestor

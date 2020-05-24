@@ -11,7 +11,7 @@ build: clean
 	cd cmd/agent  && GOOS=linux GOARCH=amd64 $(GOROOT)/bin/go build -o ../../$(out_dir)/agent/pod-sidecar-node-attestor  -i
 
 build-docker-image:
-	docker build -f ./build/docker/Dockerfile.server --build-arg MES="Hello" -t hiyosi/spire-server:${SPIRE_VERSION} .
+	docker build -f ./build/docker/Dockerfile.server --build-arg SPIRE_VERSION=${SPIRE_VERSION} -t hiyosi/spire-server:${SPIRE_VERSION} .
 
 test:
 	${GOROOT}/bin/go test -race ./cmd/... ./pkg/...
