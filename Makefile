@@ -12,6 +12,7 @@ build: clean
 
 build-docker-image:
 	docker build -f ./build/docker/Dockerfile.server --build-arg SPIRE_VERSION=${SPIRE_VERSION} -t hiyosi/spire-server:${SPIRE_VERSION} .
+	docker build -f ./build/docker/Dockerfile.agent --build-arg SPIRE_VERSION=${SPIRE_VERSION} -t hiyosi/spire-agent:${SPIRE_VERSION} .
 
 test:
 	${GOROOT}/bin/go test -race ./cmd/... ./pkg/...
